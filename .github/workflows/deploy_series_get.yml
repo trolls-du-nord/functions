@@ -1,0 +1,38 @@
+name: Deploy get series
+
+on: 
+  push:
+    branches:
+      - master
+    paths:
+      - 'series/get/*'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare repository
+      env: 
+        CREDENTIALS: ${{ secrets.CREDENTIALS }}
+        KEYS: ${{ secrets.KEYS }}
+      run: |
+        cd series/get
+        echo "$CREDENTIALS" | base64 --decode > ./credentials.json
+        echo "$KEYS" | base64 --decode > ./key.json
+    - name: Install gcloud SDK
+      run: |
+        sudo apt-get update && sudo apt-get install google-cloud-sdk
+    - name: Activate Service Account 
+      env: 
+        GCLOUD_AUTH: ${{ secrets.GCP_CREDENTIALS }}
+        GCLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+        CREDENTIALS: ${{ secrets.CREDENTIALS }}
+      run: |
+        echo "$GCLOUD_AUTH" | base64 --decode > "$HOME"/gcloud.json
+        sh -c "gcloud auth activate-service-account --key-file=$HOME/gcloud.json $*"
+    - name: deploy function 
+      run: |
+        cd series/get && gcloud functions deploy seriesGet --project=trolls-du-nord --region=europe-west1 --runtime=nodejs8 --trigger-http

@@ -1,0 +1,23 @@
+{
+  "name": "trolls-du-nord-functions-series-get",
+  "version": "0.0.1",
+  "description": "Trolls du Nords - Series - Get data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/trolls-du-nord/functions.git"
+  },
+  "author": "Thomas Sloboda <thomas@sloboda.fr>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/trolls-du-nord/functions/issues"
+  },
+  "homepage": "https://github.com/trolls-du-nord/functions#readme",
+  "dependencies": {
+    "googleapis": "^47.0.0"
+  }
+}
